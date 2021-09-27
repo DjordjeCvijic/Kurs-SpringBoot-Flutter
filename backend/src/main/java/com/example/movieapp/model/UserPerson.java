@@ -1,6 +1,7 @@
 package com.example.movieapp.model;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -17,7 +18,9 @@ public class UserPerson {
     private String userName;
     private String firstName;
     private String lastName;
+    @Nullable
     private String address;
+    @Nullable
     private String phoneNumber;
     private String email;
     private String password;

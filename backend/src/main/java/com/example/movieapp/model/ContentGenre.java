@@ -29,5 +29,6 @@ public class ContentGenre {
     @ManyToOne
     @MapsId("genreId")
     @JoinColumn(name="genre_id", nullable = false)
+    @JsonIgnore
     private Genre genre;
 }
