@@ -17,6 +17,8 @@ public class MovieRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer movieRoleId;
+
+    @Column(name = "name",nullable = false)
     private String name;
 
     public Integer getMovieRoleId() {

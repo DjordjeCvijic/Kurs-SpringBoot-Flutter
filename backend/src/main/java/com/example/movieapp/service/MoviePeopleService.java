@@ -1,8 +1,12 @@
 package com.example.movieapp.service;
 
 
+import com.example.movieapp.dto.MoviePeopleDto;
 import com.example.movieapp.model.MoviePeople;
+import com.example.movieapp.model.MoviePeopleRole;
+import com.example.movieapp.model.MovieRole;
 import com.example.movieapp.repository.MoviePeopleRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,10 +17,40 @@ import java.util.List;
 public class MoviePeopleService {
     @Autowired
     MoviePeopleRepository moviePeopleRepository;
+    @Autowired
+    MovieRoleService movieRoleService;
+    @Autowired
+    MoviePeopleRoleService moviePeopleRoleService;
 
-    public MoviePeople saveMoviePeople(@RequestBody MoviePeople requestBody) {
-        System.out.println(requestBody.getMoviePeopleId());
-        return moviePeopleRepository.save(requestBody);
+
+    public MoviePeople saveMoviePeople(@RequestBody MoviePeopleDto moviePeopleDto) {
+        MoviePeople moviePeople = moviePeopleRepository.save(buildMoviePeopleFromDto(moviePeopleDto));
+        moviePeopleDto.getMovieRoleIds().forEach(movieRoleId -> {
+            MoviePeopleRole moviePeopleRole=new MoviePeopleRole();
+            moviePeopleRole.setMoviePeople(moviePeople);
+            try {
+                moviePeopleRole.setMovieRole(movieRoleService.getMovieRoleById(movieRoleId));
+                moviePeopleRoleService.saveMoviePeopleRole(moviePeopleRole);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+        return moviePeople;
+    }
+
+    private MoviePeople buildMoviePeopleFromDto(MoviePeopleDto moviePeopleDto) {
+        MoviePeople moviePeople = new MoviePeople();
+        if (moviePeopleDto.getMoviePeopleId() != null)
+            moviePeople.setMoviePeopleId(moviePeopleDto.getMoviePeopleId());
+        moviePeople.setFirstName(moviePeopleDto.getFirstName());
+        moviePeople.setLastName(moviePeopleDto.getLastName());
+        moviePeople.setBirthDate(moviePeopleDto.getBirthDate());
+        moviePeople.setGender(moviePeopleDto.getGender());
+
+
+        return moviePeople;
     }
 
     public List<MoviePeople> getAll() {
@@ -24,10 +58,14 @@ public class MoviePeopleService {
     }
 
     public MoviePeople updateMoviePeople(MoviePeople item) {
-        MoviePeople moviePeople=moviePeopleRepository.findById(item.getMoviePeopleId()).get();
+        MoviePeople moviePeople = moviePeopleRepository.findById(item.getMoviePeopleId()).get();
         moviePeople.setFirstName(item.getFirstName());
         moviePeopleRepository.save(moviePeople);
         return moviePeople;
+    }
+
+    public MoviePeople getMoviePeopleById(Integer id) throws NotFoundException {
+        return moviePeopleRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađen movie people sa id-em:" + id));
     }
 
     public void deleteMoviePeople(Integer moviePeopleId) {

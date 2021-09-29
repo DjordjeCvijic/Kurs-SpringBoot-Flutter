@@ -1,8 +1,10 @@
 package com.example.movieapp.service;
 
 
+import com.example.movieapp.model.Genre;
 import com.example.movieapp.model.MovieRole;
 import com.example.movieapp.repository.MovieRoleRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +17,6 @@ public class MovieRoleService {
     MovieRoleRepository movieRoleRepository;
 
     public MovieRole saveMovieRole(@RequestBody MovieRole requestBody) {
-        System.out.println(requestBody.getMovieRoleId());
         return movieRoleRepository.save(requestBody);
     }
 
@@ -28,6 +29,9 @@ public class MovieRoleService {
         movieRole.setName(item.getName());
         movieRoleRepository.save(movieRole);
         return movieRole;
+    }
+    public MovieRole getMovieRoleById(Integer id) throws NotFoundException {
+        return movieRoleRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađen movie role sa id-em:" + id));
     }
 
     public void deleteMovieRole(Integer movieRoleId) {

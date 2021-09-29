@@ -13,10 +13,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class UserRoleId implements Serializable {
+public class UserPersonRoleKey implements Serializable {
     @Column(name = "roleId")
     private Integer roleId;
 
     @Column(name = "userId")
-    private Integer userId;
+    private Integer userPersonId;
 }

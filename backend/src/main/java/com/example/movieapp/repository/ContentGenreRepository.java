@@ -12,7 +12,7 @@ import java.util.List;
 public interface ContentGenreRepository extends JpaRepository<ContentGenre, ContentGenreKey> {
 
     List<ContentGenre> findByContentGenreKeyContentId(int contentId);
-    //void deleteAllByContentGenreKeyContentId(int contentId);
+
     @Modifying
     @Transactional
     void deleteByContent(Content content);

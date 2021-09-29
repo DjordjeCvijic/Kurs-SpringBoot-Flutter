@@ -14,19 +14,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "movie_people_role")
 public class MoviePeopleRole {
-
-    @EmbeddedId
-    @Column(name = "movie_people_role_id")
-    MoviePeopleRoleId moviePeopleRoleId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer moviePeopleRoleId;
 
     @ManyToOne
-    @MapsId("moviePeopleId")
-    @JoinColumn(name = "moviePeopleId", nullable = false)
+    @JoinColumn(name = "movie_people_id", nullable = false)
     private MoviePeople moviePeople;
 
     @ManyToOne
-    @MapsId("movieRoleId")
-    @JoinColumn(name = "movieRoleId", nullable = false)
+    @JoinColumn(name = "movie_role_id", nullable = false)
     private MovieRole movieRole;
 
 

@@ -14,14 +14,29 @@ import javax.persistence.*;
 public class UserPerson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
-    private String userName;
+    private Integer userPersonId;
+
+    @Column(name ="username",nullable = false)
+    private String username;
+
+    @Column(name ="firstName",nullable = false)
     private String firstName;
+
+    @Column(name ="lastName",nullable = false)
     private String lastName;
-    @Nullable
+
+    @Column(name ="address",nullable = true)
     private String address;
-    @Nullable
+
+    @Column(name ="phoneNumber",nullable = true)
     private String phoneNumber;
+
+    @Column(name ="email",nullable = false)
     private String email;
+
+    @Column(name ="password",nullable = false)
     private String password;
+
+    @Column(name = "active",nullable = false)
+    private boolean active=true;
 }

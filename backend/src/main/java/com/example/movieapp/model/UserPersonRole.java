@@ -13,16 +13,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user_role")
-public class UserRole {
+@Table(name = "user_person_role")
+public class UserPersonRole {
     @EmbeddedId
-    @Column(name = "user_role_id")
-    UserRoleId userRoleId;
+    @Column(name = "user_person_role_key")
+    UserPersonRoleKey userPersonRoleKey;
 
 
     @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name="user_id", nullable = false)
+    @MapsId("userPersonId")//kako se zove u veznoj tabel//mora se poklapati kao u kljucu
+    @JoinColumn(name="user_id", nullable = false)//kako se zove u ovoj
     @JsonIgnore
     private UserPerson userPerson;
 
