@@ -2,6 +2,7 @@ package com.example.movieapp.controller;
 
 import com.example.movieapp.model.Genre;
 import com.example.movieapp.service.GenreService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class GenreController {
     }
 
     @PutMapping("/update")
-    public Genre update(@RequestBody Genre requestBody) {
+    public Genre update(@RequestBody Genre requestBody) throws NotFoundException {
         System.out.println(requestBody.getGenreId());
         return genreService.updateGenre(requestBody);
     }

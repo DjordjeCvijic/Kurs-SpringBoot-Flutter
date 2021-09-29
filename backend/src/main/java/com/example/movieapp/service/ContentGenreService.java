@@ -1,6 +1,7 @@
 package com.example.movieapp.service;
 
 
+import com.example.movieapp.model.Content;
 import com.example.movieapp.model.ContentGenre;
 import com.example.movieapp.model.Genre;
 import com.example.movieapp.repository.ContentGenreRepository;
@@ -25,8 +26,7 @@ public class ContentGenreService {
         return contentGenreRepository.findAll();
     }
 
-    public void deleteContentGenreByContentID(Integer contentId) {
-
-        contentGenreRepository.deleteAllByContentGenreKeyContentId(contentId);
+    public void deleteContentGenreByContent(Content content) {
+        contentGenreRepository.deleteByContent(content);
     }
 }

@@ -26,12 +26,13 @@ public class LanguageService {
     }
 
     public Language updateLanguage(Language item) throws NotFoundException {
-        Language language=getLanguageId(item.getLanguageId());
+        Language language = getLanguageById(item.getLanguageId());
         language.setName(item.getName());
         languageRepository.save(language);
         return language;
     }
-    public Language getLanguageId(Integer id) throws NotFoundException {
+
+    public Language getLanguageById(Integer id) throws NotFoundException {
         return languageRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađen jezik sa id-em:" + id));
     }
 

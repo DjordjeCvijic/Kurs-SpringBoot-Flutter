@@ -3,6 +3,7 @@ package com.example.movieapp.controller;
 import com.example.movieapp.model.ContentType;
 import com.example.movieapp.service.ContentTypeService;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ContentTypeController {
     }
 
     @PutMapping("/update")
-    public ContentType update(@RequestBody ContentType requestBody) {
+    public ContentType update(@RequestBody ContentType requestBody) throws NotFoundException {
         System.out.println(requestBody.getContentTypeId());
         return contentTypeService.updateContentType(requestBody);
     }

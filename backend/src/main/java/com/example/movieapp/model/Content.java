@@ -1,5 +1,6 @@
 package com.example.movieapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,16 +45,16 @@ public class Content {
     private String trailerLink;
 
     @ManyToOne
-    @JoinColumn(name = "countryId", nullable = false)
-    private Country countryId;
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 
     @ManyToOne
-    @JoinColumn(name = "contentTypeId", nullable = false)
-    private ContentType contentTypeId;
+    @JoinColumn(name = "content_type_id", nullable = false)
+    private ContentType contentType;
 
     @ManyToOne
-    @JoinColumn(name = "languageId", nullable = false)
-    private Language languageId;
+    @JoinColumn(name = "language_id", nullable = false)
+    private Language language;
 
 
 

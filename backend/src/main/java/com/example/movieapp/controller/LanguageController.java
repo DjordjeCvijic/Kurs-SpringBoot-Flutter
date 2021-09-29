@@ -2,6 +2,7 @@ package com.example.movieapp.controller;
 
 import com.example.movieapp.model.Language;
 import com.example.movieapp.service.LanguageService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class LanguageController {
     }
 
     @PutMapping("/update")
-    public Language update(@RequestBody Language requestBody) {
+    public Language update(@RequestBody Language requestBody) throws NotFoundException {
         System.out.println(requestBody.getLanguageId());
         return languageService.updateLanguage(requestBody);
     }
