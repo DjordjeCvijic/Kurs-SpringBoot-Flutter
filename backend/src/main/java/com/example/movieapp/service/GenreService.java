@@ -1,7 +1,9 @@
 package com.example.movieapp.service;
 
+import com.example.movieapp.model.Country;
 import com.example.movieapp.model.Genre;
 import com.example.movieapp.repository.GenreRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +24,15 @@ public class GenreService {
         return genreRepository.findAll();
     }
 
-    public Genre updateGenre(Genre item) {
-        Genre genre=genreRepository.findById(item.getGenreId()).get();
+    public Genre updateGenre(Genre item) throws NotFoundException {
+        Genre genre=getGenreById(item.getGenreId());
         genre.setName(item.getName());
         genreRepository.save(genre);
         return genre;
+    }
+
+    public Genre getGenreById(Integer id) throws NotFoundException {
+        return genreRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađen zanr sa id-em:" + id));
     }
 
     public void deleteGenre(Integer genreId) {

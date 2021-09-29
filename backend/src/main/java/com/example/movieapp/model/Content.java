@@ -21,25 +21,40 @@ public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer contentId;
+
+    @Column(name = "title",nullable = false)
     private String title;
+
+    @Column(name = "year",nullable = false)
     private Integer year;
-    @Nullable
+
+    @Column(name = "duration",nullable = true)
     private Integer duration;
+
+    @Column(name = "releaseDate",nullable = false)
     private Date releaseDate;
+
+    @Column(name = "rating",nullable = false)
     private Float rating;
+
+    @Column(name = "coverLink",nullable = false)
     private String coverLink;
+
+    @Column(name = "trailerLink",nullable = false)
     private String trailerLink;
+
     @ManyToOne
     @JoinColumn(name = "countryId", nullable = false)
     private Country countryId;
+
     @ManyToOne
     @JoinColumn(name = "contentTypeId", nullable = false)
     private ContentType contentTypeId;
+
     @ManyToOne
     @JoinColumn(name = "languageId", nullable = false)
     private Language languageId;
 
-    @OneToMany(mappedBy = "content")
-    private List<ContentGenre> contentGenreList;
+
 
 }

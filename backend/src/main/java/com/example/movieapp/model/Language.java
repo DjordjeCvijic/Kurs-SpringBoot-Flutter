@@ -9,7 +9,11 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer languageId;
+
+    @Column(name = "name",nullable = false)
     private String name;
+
+    @Column(name = "code",nullable = false)
     private String code;
 
     public Integer getLanguageId() {

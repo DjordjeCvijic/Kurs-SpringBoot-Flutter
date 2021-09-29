@@ -15,20 +15,18 @@ import javax.persistence.*;
 @Table(name = "content_genre")
 public class ContentGenre {
     @EmbeddedId
-    @Column(name = "content_genre_id")
-    ContentGenreId contentGenreId;
+    @Column(name = "content_genre_key")
+    ContentGenreKey contentGenreKey;
 
 
     @ManyToOne
     @MapsId("contentId")
     @JoinColumn(name="content_id", nullable = false)
-    @JsonIgnore
     private Content content;
 
 
     @ManyToOne
     @MapsId("genreId")
     @JoinColumn(name="genre_id", nullable = false)
-    @JsonIgnore
     private Genre genre;
 }

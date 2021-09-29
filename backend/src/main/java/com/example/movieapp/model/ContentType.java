@@ -17,6 +17,8 @@ public class ContentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer contentTypeId;
+
+    @Column(name = "name",nullable = false)
     private String name;
 
     public Integer getContentTypeId() {

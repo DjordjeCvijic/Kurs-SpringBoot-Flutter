@@ -1,8 +1,10 @@
 package com.example.movieapp.service;
 
 
+import com.example.movieapp.model.Country;
 import com.example.movieapp.model.Language;
 import com.example.movieapp.repository.LanguageRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,11 +25,14 @@ public class LanguageService {
         return languageRepository.findAll();
     }
 
-    public Language updateLanguage(Language item) {
-        Language language=languageRepository.findById(item.getLanguageId()).get();
+    public Language updateLanguage(Language item) throws NotFoundException {
+        Language language=getLanguageId(item.getLanguageId());
         language.setName(item.getName());
         languageRepository.save(language);
         return language;
+    }
+    public Language getLanguageId(Integer id) throws NotFoundException {
+        return languageRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađen jezik sa id-em:" + id));
     }
 
     public void deleteLanguage(Integer languageId) {

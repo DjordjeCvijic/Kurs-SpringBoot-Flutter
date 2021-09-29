@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class ContentGenreId implements Serializable {
+public class ContentGenreKey implements Serializable {
 
     @Column(name = "genre_id")
     private Integer genreId;
