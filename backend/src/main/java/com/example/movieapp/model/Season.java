@@ -17,10 +17,14 @@ public class Season {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seasonId;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "season_number")
     private Integer seasonNumber;
 
     @ManyToOne
-    @JoinColumn(name="contentId", nullable = false)
-    private Content contentId;
+    @JoinColumn(name="content_id", nullable = false)
+    private Content content;
 }

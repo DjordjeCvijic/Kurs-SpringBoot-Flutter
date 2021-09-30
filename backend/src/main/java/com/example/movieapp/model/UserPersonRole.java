@@ -1,5 +1,6 @@
 package com.example.movieapp.model;
 
+import com.example.movieapp.compositekey.UserPersonRoleKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

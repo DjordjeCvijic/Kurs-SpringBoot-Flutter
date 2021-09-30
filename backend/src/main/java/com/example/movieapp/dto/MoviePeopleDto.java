@@ -28,5 +28,4 @@ public class MoviePeopleDto {
 
     private String gender;
 
-    private List<Integer> movieRoleIds;
 }

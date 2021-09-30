@@ -16,11 +16,17 @@ public class Episode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer episodeId;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "duration")
     private Integer duration;
+
+    @Column(name = "episodeNumber")
     private Integer episodeNumber;
 
     @ManyToOne
-    @JoinColumn(name="seasonId", nullable=false)
-    private Season seasonId;
+    @JoinColumn(name="season_id", nullable=false)
+    private Season season;
 }

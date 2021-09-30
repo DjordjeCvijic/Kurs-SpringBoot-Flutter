@@ -1,14 +1,10 @@
 package com.example.movieapp.dto;
 
-import com.example.movieapp.model.ContentType;
-import com.example.movieapp.model.Country;
-import com.example.movieapp.model.Language;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -31,4 +27,6 @@ public class ContentDao {
     private Integer languageId;
 
     private List<Integer> genreIds;
+    private List<MovieSerieCastDto> movieSerieCastDtos;
+    private List<SeasonDto> seasonDtoList;
 }

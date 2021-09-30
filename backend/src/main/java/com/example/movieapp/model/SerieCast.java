@@ -1,25 +1,39 @@
 package com.example.movieapp.model;
 
+import com.example.movieapp.compositekey.MovieCastKey;
+import com.example.movieapp.compositekey.SerieCastKey;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "serie_cast")
-public class SerieCast implements Serializable {
+public class SerieCast {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer serieCastId;
-
-    @ManyToOne
-    @JoinColumn(name = "seasonId", nullable = false)
-    private Season seasonId;
+    @EmbeddedId
+    @Column(name = "serie_cast_key")
+    SerieCastKey serieCastKey;
 
     @ManyToOne
-    @JoinColumn(name = "moviePeopleId", nullable = false)
-    private MoviePeople moviePeopleId;
+    @MapsId("seasonId")
+    @JoinColumn(name = "season_id", nullable = false)
+    private Season season;
 
     @ManyToOne
-    @JoinColumn(name = "movieRoleId", nullable = false)
-    private MovieRole movieRoleId;
+    @MapsId("moviePeopleId")
+    @JoinColumn(name = "movie_people_id", nullable = false)
+    private MoviePeople moviePeople;
+
+    @ManyToOne
+    @MapsId("movieRoleId")
+    @JoinColumn(name = "movie_role_id", nullable = false)
+    private MovieRole movieRole;
 }

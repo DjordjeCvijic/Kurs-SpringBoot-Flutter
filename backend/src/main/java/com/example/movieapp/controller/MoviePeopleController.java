@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movie_people")
+@RequestMapping("/movie-people")
 public class MoviePeopleController {
     @Autowired
     MoviePeopleService moviePeopleService;
 
-    @PostMapping("save")
+    @PostMapping("/save")
     public MoviePeople saveMoviePeople(@RequestBody MoviePeopleDto requestBody) {
         return moviePeopleService.saveMoviePeople(requestBody);
     }
@@ -26,7 +26,7 @@ public class MoviePeopleController {
     }
 
     @GetMapping(value = "/{id}")
-    public MoviePeople findById(@PathVariable("id") Integer id) throws NotFoundException {
+    public MoviePeople findById(@PathVariable Integer id) throws NotFoundException {
         return moviePeopleService.getMoviePeopleById(id);
     }
 

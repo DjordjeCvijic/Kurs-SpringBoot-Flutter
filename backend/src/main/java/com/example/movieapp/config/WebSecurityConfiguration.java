@@ -25,6 +25,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	JwtRequestFilter jwtRequestFilter;
 
+	String[] adminPermissionsList={"/movie-people/**"};
+	String[] userPermissionsList={"/movie-people","/test/user","/content-comment/**"};
+	String[] swaggerPermissionsList={"/swagger-ui/*", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**"};
+	String[] permissionsForAllList={"/test/login","/movie-people"};
+
 	// authentication
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,11 +44,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 				.csrf().disable()
 				.authorizeRequests()
-				.antMatchers("/user-person/**", "/test/login").permitAll()
+				.antMatchers(permissionsForAllList).permitAll()
 				//.antMatchers("/swagger-resources/**").permitAll()
-				.antMatchers("/swagger-ui/*", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**").permitAll()
-				.antMatchers("/test/admin").hasRole("ADMIN")
-				.antMatchers("/test/user").hasAnyRole("USER")
+				.antMatchers(swaggerPermissionsList).permitAll()
+				.antMatchers(adminPermissionsList).hasRole("ADMIN")
+				.antMatchers(userPermissionsList).hasAnyRole("USER")
 				.anyRequest().authenticated()
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http

@@ -1,5 +1,6 @@
 package com.example.movieapp.service;
 
+import com.example.movieapp.compositekey.UserPersonRoleKey;
 import com.example.movieapp.dto.UserPersonDto;
 import com.example.movieapp.model.*;
 import com.example.movieapp.repository.RoleRepository;

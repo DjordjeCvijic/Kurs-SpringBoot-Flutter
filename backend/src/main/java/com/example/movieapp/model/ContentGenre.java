@@ -1,6 +1,6 @@
 package com.example.movieapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.movieapp.compositekey.ContentGenreKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

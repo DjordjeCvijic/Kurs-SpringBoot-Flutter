@@ -1,18 +1,15 @@
 package com.example.movieapp.service;
 
+import com.example.movieapp.compositekey.MovieCastKey;
 import com.example.movieapp.dto.ContentDao;
-import com.example.movieapp.model.Content;
-import com.example.movieapp.model.ContentGenre;
-import com.example.movieapp.model.ContentGenreKey;
-import com.example.movieapp.model.Genre;
+import com.example.movieapp.model.*;
+import com.example.movieapp.compositekey.ContentGenreKey;
 import com.example.movieapp.repository.ContentRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.swing.text.AbstractDocument;
 import java.util.List;
 
 @Service
@@ -31,6 +28,16 @@ public class ContentService {
     @Autowired
     ContentGenreService contentGenreService;
 
+    @Autowired
+    MovieCastService movieCastService;
+    @Autowired
+    MovieRoleService movieRoleService;
+    @Autowired
+    MoviePeopleService moviePeopleService;
+    @Autowired
+    SeasonService seasonService;
+
+
     public Content saveContent(@RequestBody ContentDao contentDao) throws NotFoundException {
         Content content=contentRepository.save(buildContentFromDto(contentDao));
         contentDao.getGenreIds().forEach(genreId->{
@@ -42,6 +49,30 @@ public class ContentService {
                 e.printStackTrace();
             }
         });
+        if(contentDao.getMovieSerieCastDtos()!=null){
+            //radi se o filmu i sada treba popuniti tabelu  Movie Cast
+            contentDao.getMovieSerieCastDtos().forEach(movieCastDto -> {
+                MovieCastKey key=new MovieCastKey(content.getContentId(),movieCastDto.getMovieRoleId(),movieCastDto.getMoviePeopleId());
+                try {
+                    MoviePeople moviePeople=moviePeopleService.getMoviePeopleById(movieCastDto.getMoviePeopleId());
+                    MovieRole movieRole=movieRoleService.getMovieRoleById(movieCastDto.getMovieRoleId());
+                    movieCastService.saveMovieCast(new MovieCast(key,content,movieRole,moviePeople));
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            });
+        }
+        if(contentDao.getSeasonDtoList()!=null){
+            contentDao.getSeasonDtoList().forEach(seasonDto -> {
+                try {
+                    seasonService.saveSeason(seasonDto,content.getContentId());
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
 
         return content;
     }
@@ -56,11 +87,15 @@ public class ContentService {
         Content content=getContentById(contentDaoToSave.getContentId());
         //brisanje zapisa iz vezne tabele
         contentGenreService.deleteContentGenreByContent(content);
+        movieCastService.deleteMovieCastByContent(content);
+        seasonService.deleteSeasonByContent(content);
         return saveContent(contentDaoToSave);
     }
 
     public void deleteContent(Integer contentId) throws NotFoundException {
         contentGenreService.deleteContentGenreByContent(getContentById(contentId));
+        movieCastService.deleteMovieCastByContent(getContentById(contentId));
+        seasonService.deleteSeasonByContent(getContentById(contentId));
         contentRepository.deleteById(contentId);
     }
 

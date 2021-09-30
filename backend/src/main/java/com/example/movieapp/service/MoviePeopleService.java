@@ -3,8 +3,6 @@ package com.example.movieapp.service;
 
 import com.example.movieapp.dto.MoviePeopleDto;
 import com.example.movieapp.model.MoviePeople;
-import com.example.movieapp.model.MoviePeopleRole;
-import com.example.movieapp.model.MovieRole;
 import com.example.movieapp.repository.MoviePeopleRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +17,23 @@ public class MoviePeopleService {
     MoviePeopleRepository moviePeopleRepository;
     @Autowired
     MovieRoleService movieRoleService;
-    @Autowired
-    MoviePeopleRoleService moviePeopleRoleService;
+
 
 
     public MoviePeople saveMoviePeople(@RequestBody MoviePeopleDto moviePeopleDto) {
         MoviePeople moviePeople = moviePeopleRepository.save(buildMoviePeopleFromDto(moviePeopleDto));
-        moviePeopleDto.getMovieRoleIds().forEach(movieRoleId -> {
-            MoviePeopleRole moviePeopleRole=new MoviePeopleRole();
-            moviePeopleRole.setMoviePeople(moviePeople);
-            try {
-                moviePeopleRole.setMovieRole(movieRoleService.getMovieRoleById(movieRoleId));
-                moviePeopleRoleService.saveMoviePeopleRole(moviePeopleRole);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        });
+//        moviePeopleDto.getMovieRoleIds().forEach(movieRoleId -> {
+//            MoviePeopleRole moviePeopleRole=new MoviePeopleRole();
+//            moviePeopleRole.setMoviePeople(moviePeople);
+//            try {
+//                moviePeopleRole.setMovieRole(movieRoleService.getMovieRoleById(movieRoleId));
+//                moviePeopleRoleService.saveMoviePeopleRole(moviePeopleRole);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        });
         return moviePeople;
     }
 

@@ -1,5 +1,6 @@
 package com.example.movieapp.repository;
 
+import com.example.movieapp.compositekey.UserPersonRoleKey;
 import com.example.movieapp.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
