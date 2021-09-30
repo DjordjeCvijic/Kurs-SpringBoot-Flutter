@@ -1,4 +1,4 @@
-package com.example.movieapp.config;
+package com.security.jwt.cofing;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,9 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -37,20 +35,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		// @formatter:off
 
 		http
-				.csrf().disable()
-				.authorizeRequests()
-				.antMatchers("/user-person/**", "/test/login").permitAll()
-				//.antMatchers("/swagger-resources/**").permitAll()
-				.antMatchers("/swagger-ui/*", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**").permitAll()
-				.antMatchers("/test/admin").hasRole("ADMIN")
-				.antMatchers("/test/user").hasAnyRole("USER")
-				.anyRequest().authenticated()
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			.csrf().disable()
+			.authorizeRequests()
+			.antMatchers("/user/add", "/test/authenticate").permitAll()
+			.antMatchers("/test/admin").hasRole("ADMIN")
+			.antMatchers("/test/user").hasAnyRole("USER")
+			.anyRequest().authenticated()
+			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http
-				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		// @formatter:on
 	}
+
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {

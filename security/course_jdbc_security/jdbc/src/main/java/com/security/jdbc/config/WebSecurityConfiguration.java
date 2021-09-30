@@ -1,4 +1,4 @@
-package com.example.movieapp.config;
+package com.security.jdbc.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,49 +8,32 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	UserDetailsServiceImpl userDetailsService;
-
-	@Autowired
-	JwtRequestFilter jwtRequestFilter;
+	UserDetailsService userDetailsService;
 
 	// authentication
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
+		auth.userDetailsService(userDetailsService);
 	}
 
 	// authorization
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
 
-		http
-				.csrf().disable()
-				.authorizeRequests()
-				.antMatchers("/user-person/**", "/test/login").permitAll()
-				//.antMatchers("/swagger-resources/**").permitAll()
-				.antMatchers("/swagger-ui/*", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**").permitAll()
-				.antMatchers("/test/admin").hasRole("ADMIN")
-				.antMatchers("/test/user").hasAnyRole("USER")
-				.anyRequest().authenticated()
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http
-				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN").antMatchers("/user").hasRole("USER")
+				.antMatchers("/").permitAll().and().formLogin();
 
-		// @formatter:on
 	}
+
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -58,8 +41,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder(11);
+	public PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
 	}
 
 }

@@ -7,6 +7,7 @@ import com.example.movieapp.repository.UserPersonRepository;
 import com.example.movieapp.repository.UserPersonRoleRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class UserPersonService {
     RoleRepository roleRepository;
     @Autowired
     UserPersonRoleRepository userPersonRoleRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public UserPerson saveUserPerson(UserPersonDto userPersonDto) {
         UserPerson user = userPersonRepository.save(buildUserFromDto(userPersonDto));
@@ -59,7 +62,7 @@ public class UserPersonService {
         userPerson.setFirstName(userPersonDto.getFirstName());
         userPerson.setLastName(userPersonDto.getLastName());
         userPerson.setUsername(userPersonDto.getUsername());
-        userPerson.setPassword(userPersonDto.getPassword());
+        userPerson.setPassword(passwordEncoder.encode(userPersonDto.getPassword()));
         userPerson.setAddress(userPersonDto.getAddress());
         userPerson.setPhoneNumber(userPersonDto.getPhoneNumber());
         userPerson.setEmail(userPersonDto.getEmail());
