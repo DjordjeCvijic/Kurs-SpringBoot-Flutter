@@ -1,11 +1,11 @@
 package com.example.movieapp.model;
 
+import com.example.movieapp.compositekey.ReviewKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 
@@ -18,12 +18,12 @@ import javax.persistence.*;
 public class Review {
     @EmbeddedId
     @Column(name = "review_id")
-    ReviewId reviewId;
+    ReviewKey reviewKey;
 
 
     @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name="user_id", nullable = false)
+    @MapsId("userPersonId")
+    @JoinColumn(name="user_person_id", nullable = false)
     @JsonIgnore
     private UserPerson userPerson;
 
@@ -33,6 +33,9 @@ public class Review {
     @JoinColumn(name="content_id", nullable = false)
     private Content content;
 
+    @Column(name = "rating", nullable = true)
     private Integer rating;
+
+    @Column(name = "favourite", nullable = true)
     private Boolean favourite;
 }

@@ -36,6 +36,8 @@ public class ContentService {
     MoviePeopleService moviePeopleService;
     @Autowired
     SeasonService seasonService;
+    @Autowired
+    ReviewService reviewService;
 
 
     public Content saveContent(@RequestBody ContentDao contentDao) throws NotFoundException {
@@ -96,6 +98,7 @@ public class ContentService {
         contentGenreService.deleteContentGenreByContent(getContentById(contentId));
         movieCastService.deleteMovieCastByContent(getContentById(contentId));
         seasonService.deleteSeasonByContent(getContentById(contentId));
+        reviewService.deleteReviewByContent(getContentById(contentId));
         contentRepository.deleteById(contentId);
     }
 
@@ -119,5 +122,8 @@ public class ContentService {
 
     public Content getContentById(Integer id) throws NotFoundException {
         return contentRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađena Content sa id-em:" + id));
+    }
+    public Content updateRating(Content content){
+        return contentRepository.save(content);
     }
 }

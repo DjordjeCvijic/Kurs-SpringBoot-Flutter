@@ -1,4 +1,4 @@
-package com.example.movieapp.model;
+package com.example.movieapp.compositekey;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,10 +14,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class ReviewId implements Serializable {
-    @Column(name = "userId")
-    private Integer userId;
+public class ReviewKey implements Serializable {
+    @Column(name = "user_person_id")
+    private Integer userPersonId;
 
-    @Column(name = "contentId")
+    @Column(name = "content_id")
     private Integer contentId;
 }
