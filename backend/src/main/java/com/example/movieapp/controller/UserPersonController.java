@@ -1,6 +1,7 @@
 package com.example.movieapp.controller;
 
 import com.example.movieapp.dto.UserPersonDto;
+import com.example.movieapp.dto.UserPersonInfoDto;
 import com.example.movieapp.model.Content;
 import com.example.movieapp.model.UserPerson;
 import com.example.movieapp.service.ContentService;
@@ -41,5 +42,9 @@ public class UserPersonController {
     }
 
 
+    @PutMapping("/update-info")
+    public UserPerson updateUserPersonInfo(@RequestBody UserPersonInfoDto requestBody) throws NotFoundException {
+        return userPersonService.updateUserPersonInfo(requestBody);
+    }
 
 }

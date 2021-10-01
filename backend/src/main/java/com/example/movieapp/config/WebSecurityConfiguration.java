@@ -25,10 +25,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	JwtRequestFilter jwtRequestFilter;
 
-	String[] adminPermissionsList={"/movie-people/**"};
-	String[] userPermissionsList={"/movie-people","/test/user","/content-comment/**"};
+	String[] adminPermissionsList={"/movie-people/**","/content/**"};
+	String[] userPermissionsList={};
+	String[] userAndAminPermissionsList={"/content-comment/**","/review/**","/genre","user-person/update-info"};
 	String[] swaggerPermissionsList={"/swagger-ui/*", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**"};
-	String[] permissionsForAllList={"/test/login","/movie-people"};
+	String[] permissionsForAllList={"/auth/**"};
 
 	// authentication
 	@Override
@@ -48,7 +49,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				//.antMatchers("/swagger-resources/**").permitAll()
 				.antMatchers(swaggerPermissionsList).permitAll()
 				.antMatchers(adminPermissionsList).hasRole("ADMIN")
-				.antMatchers(userPermissionsList).hasAnyRole("USER")
+				.antMatchers(userPermissionsList).hasRole("USER")
+				.antMatchers(userAndAminPermissionsList).hasAnyRole("USER","ADMIN")
 				.anyRequest().authenticated()
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http

@@ -2,6 +2,7 @@ package com.example.movieapp.service;
 
 import com.example.movieapp.compositekey.UserPersonRoleKey;
 import com.example.movieapp.dto.UserPersonDto;
+import com.example.movieapp.dto.UserPersonInfoDto;
 import com.example.movieapp.model.*;
 import com.example.movieapp.repository.RoleRepository;
 import com.example.movieapp.repository.UserPersonRepository;
@@ -49,6 +50,7 @@ public class UserPersonService {
         }
         throw new NotFoundException("Nije pronađen korisnik sa id-em:" + userDto.getUserPersonId());
     }
+
     public void deleteUserPersonById(int id) throws NotFoundException {
         UserPerson user = getUserPersonById(id);
         user.setActive(false);
@@ -77,5 +79,23 @@ public class UserPersonService {
 
     public Optional<UserPerson> getUserPersonByUsername(String username) {
         return userPersonRepository.findByUsername(username);
+    }
+
+    public UserPerson updateUserPersonInfo(UserPersonInfoDto userPersonInfoDto) throws NotFoundException {
+        UserPerson userPerson = getUserPersonById(userPersonInfoDto.getUserPersonId());
+        if (userPersonInfoDto.getFirstName() != null)
+            userPerson.setFirstName(userPersonInfoDto.getFirstName());
+        if (userPersonInfoDto.getLastName() != null)
+            userPerson.setLastName(userPersonInfoDto.getLastName());
+        if (userPersonInfoDto.getAddress() != null)
+            userPerson.setAddress(userPersonInfoDto.getAddress());
+        if (userPersonInfoDto.getPhoneNumber() != null)
+            userPerson.setPhoneNumber(userPersonInfoDto.getPhoneNumber());
+        if (userPersonInfoDto.getFirstName() != null)
+            userPerson.setFirstName(userPersonInfoDto.getFirstName());
+        if (userPersonInfoDto.getUsername() != null)
+            userPerson.setUsername(userPersonInfoDto.getUsername());
+        userPersonRepository.save(userPerson);
+        return userPerson;
     }
 }

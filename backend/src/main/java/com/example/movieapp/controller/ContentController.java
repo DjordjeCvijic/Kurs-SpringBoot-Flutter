@@ -3,6 +3,7 @@ package com.example.movieapp.controller;
 
 import com.example.movieapp.dto.ContentDao;
 import com.example.movieapp.model.Content;
+import com.example.movieapp.model.ContentComment;
 import com.example.movieapp.service.ContentService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,13 @@ public class ContentController {
 
     @GetMapping()
     public List<Content> getAll() {
+
         return contentService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Content findById(@PathVariable Integer id) throws NotFoundException {
+        return contentService.getContentById(id);
     }
 
     @PostMapping("/save")

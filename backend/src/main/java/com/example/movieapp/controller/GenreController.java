@@ -14,7 +14,7 @@ public class GenreController {
     @Autowired
     GenreService genreService;
 
-    @PostMapping("save")
+    @PostMapping("/save")
     public Genre saveGenre(@RequestBody Genre requestBody) {
         return genreService.saveGenre(requestBody);
     }

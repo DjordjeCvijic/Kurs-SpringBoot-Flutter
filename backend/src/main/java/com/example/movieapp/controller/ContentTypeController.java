@@ -15,7 +15,7 @@ public class ContentTypeController {
     @Autowired
     ContentTypeService contentTypeService;
 
-    @PostMapping("save")
+    @PostMapping("/save")
     public ContentType saveContentType(@RequestBody ContentType requestBody) {
         return contentTypeService.saveContentType(requestBody);
     }

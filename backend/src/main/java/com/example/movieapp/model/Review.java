@@ -34,7 +34,7 @@ public class Review {
     private Content content;
 
     @Column(name = "rating", nullable = true)
-    private Integer rating;
+    private Integer rating=0;
 
     @Column(name = "favourite", nullable = true)
     private Boolean favourite;
