@@ -20,37 +20,41 @@ public class EpisodeService {
     @Autowired
     SeasonService seasonService;
 
-    public Episode saveEpisode(EpisodeDto episodeDto,Integer seasonId) throws NotFoundException {
-        return episodeRepository.save(buildEpisodeFromDto(episodeDto,seasonId));
+    public Episode saveEpisode(EpisodeDto episodeDto, Integer seasonId) throws NotFoundException {
+        return episodeRepository.save(buildEpisodeFromDto(episodeDto, seasonId));
     }
 
-    private Episode buildEpisodeFromDto(EpisodeDto episodeDto,Integer seasonId) throws NotFoundException {
-        Episode episode=new Episode();
-        if(episodeDto.getEpisodeId()!=null)
+    private Episode buildEpisodeFromDto(EpisodeDto episodeDto, Integer seasonId) throws NotFoundException {
+        Episode episode = new Episode();
+        if (episodeDto.getEpisodeId() != null)
             episode.setEpisodeId(episodeDto.getEpisodeId());
         episode.setSeason(seasonService.getSeasonById(seasonId));
         episode.setName(episodeDto.getName());
         episode.setDuration(episodeDto.getDuration());
         episode.setEpisodeNumber(episodeDto.getEpisodeNumber());
-        return  episode;
+        return episode;
     }
 
     public List<Episode> getAll() {
         return episodeRepository.findAll();
     }
+
     public Episode getEpisodeById(Integer id) throws NotFoundException {
         return episodeRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađena Content sa id-em:" + id));
     }
 
     public Episode updateEpisode(EpisodeDto item) throws NotFoundException {
 
-        Episode episode=getEpisodeById(item.getEpisodeId());
-        saveEpisode(item,item.getSeasonId());
+        Episode episode = getEpisodeById(item.getEpisodeId());
+        saveEpisode(item, item.getSeasonId());
         return episode;
     }
 
-    public void deleteEpisode(Integer episodeId) {
-        episodeRepository.deleteById(episodeId);
+    public void deleteEpisode(Integer episodeId) throws NotFoundException {
+
+        if (episodeRepository.existsById(episodeId))
+            episodeRepository.deleteById(episodeId);
+        throw new NotFoundException("Nije pronađena epizoda sa id-em:" + episodeId);
     }
 
     public void deleteEpisodeBySeason(Season season) {

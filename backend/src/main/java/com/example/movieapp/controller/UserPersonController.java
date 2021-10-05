@@ -7,6 +7,7 @@ import com.example.movieapp.model.UserPerson;
 import com.example.movieapp.service.ContentService;
 import com.example.movieapp.service.UserPersonService;
 import javassist.NotFoundException;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,14 @@ public class UserPersonController {
     @Autowired
     UserPersonService userPersonService;
 
-    @GetMapping()
+    @GetMapping("getAll")
     public List<UserPerson> getAll() {
         return userPersonService.getAll();
+    }
+
+    @GetMapping
+    public UserPerson findById(@RequestParam("id") Integer id) throws NotFoundException {
+        return userPersonService.getUserPersonById(id);
     }
 
     @PostMapping("/save")
@@ -36,8 +42,8 @@ public class UserPersonController {
     }
 
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Integer id) throws NotFoundException {
+    @DeleteMapping()
+    public void deleteById(@RequestParam("id") Integer id) throws NotFoundException {
         userPersonService.deleteUserPersonById(id);
     }
 

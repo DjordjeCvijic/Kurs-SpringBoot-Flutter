@@ -19,19 +19,18 @@ public class GenreController {
         return genreService.saveGenre(requestBody);
     }
 
-    @GetMapping()
+    @GetMapping("/getAll")
     public List<Genre> getAll() {
         return genreService.getAll();
     }
 
     @PutMapping("/update")
     public Genre update(@RequestBody Genre requestBody) throws NotFoundException {
-        System.out.println(requestBody.getGenreId());
         return genreService.updateGenre(requestBody);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Integer item) {
-        genreService.deleteGenre(item);
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Integer id) {
+        genreService.deleteGenre(id);
     }
 }

@@ -19,7 +19,6 @@ public class MoviePeopleService {
     MovieRoleService movieRoleService;
 
 
-
     public MoviePeople saveMoviePeople(@RequestBody MoviePeopleDto moviePeopleDto) {
         MoviePeople moviePeople = moviePeopleRepository.save(buildMoviePeopleFromDto(moviePeopleDto));
 //        moviePeopleDto.getMovieRoleIds().forEach(movieRoleId -> {
@@ -54,8 +53,8 @@ public class MoviePeopleService {
         return moviePeopleRepository.findAll();
     }
 
-    public MoviePeople updateMoviePeople(MoviePeople item) {
-        MoviePeople moviePeople = moviePeopleRepository.findById(item.getMoviePeopleId()).get();
+    public MoviePeople updateMoviePeople(MoviePeople item) throws NotFoundException {
+        MoviePeople moviePeople = getMoviePeopleById(item.getMoviePeopleId());
         moviePeople.setFirstName(item.getFirstName());
         moviePeopleRepository.save(moviePeople);
         return moviePeople;
@@ -65,7 +64,10 @@ public class MoviePeopleService {
         return moviePeopleRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađen movie people sa id-em:" + id));
     }
 
-    public void deleteMoviePeople(Integer moviePeopleId) {
-        moviePeopleRepository.deleteById(moviePeopleId);
+    public void deleteMoviePeople(Integer moviePeopleId) throws NotFoundException {
+        if (moviePeopleRepository.existsById(moviePeopleId))
+            moviePeopleRepository.deleteById(moviePeopleId);
+        throw new NotFoundException("Nije pronađea movie people sa id-em:" + moviePeopleId);
+
     }
 }

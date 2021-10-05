@@ -18,7 +18,7 @@ public class CountryController {
         return countryService.saveCountry(requestBody);
     }
 
-    @GetMapping()
+    @GetMapping("getAll")
     public List<Country> getAll() {
         return countryService.getAll();
     }
@@ -29,8 +29,8 @@ public class CountryController {
         return countryService.updateCountry(requestBody);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Integer item) {
-        countryService.deleteCountry(item);
+    @DeleteMapping()
+    public void deleteById(@RequestParam("id") Integer id) {
+        countryService.deleteCountry(id);
     }
 }

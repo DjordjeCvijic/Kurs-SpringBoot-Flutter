@@ -15,7 +15,7 @@ public class SerieCastService {
     SerieCastRepository serieCastRepository;
 
 
-    public SerieCast saveSerieCast(SerieCast serieCast){
+    public SerieCast saveSerieCast(SerieCast serieCast) {
         return serieCastRepository.save(serieCast);
     }
 

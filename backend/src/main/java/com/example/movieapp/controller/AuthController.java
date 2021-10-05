@@ -1,12 +1,16 @@
 package com.example.movieapp.controller;
 
 import com.example.movieapp.config.UserDetailsServiceImpl;
+import com.example.movieapp.dto.ForgotPasswordDto;
+import com.example.movieapp.dto.ResetPasswordDto;
 import com.example.movieapp.dto.UserPersonDto;
+import com.example.movieapp.exception.TokenExpiredException;
 import com.example.movieapp.model.AuthenticationRequest;
 import com.example.movieapp.model.AuthenticationResponse;
 import com.example.movieapp.model.UserPerson;
 import com.example.movieapp.service.UserPersonService;
 import com.example.movieapp.util.JwtUtil;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -57,5 +58,15 @@ public class AuthController {
     @PostMapping("/registration")
     public UserPerson saveUserPerson(@RequestBody UserPersonDto requestBody) {
         return userPersonService.saveUserPerson(requestBody);
+    }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto) throws NotFoundException {
+        userPersonService.forgotPassword(forgotPasswordDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public UserPerson resetPassword(@RequestParam String token, @RequestBody ResetPasswordDto resetPasswordDto) throws NotFoundException, TokenExpiredException {
+        return userPersonService.resetPassword(token, resetPasswordDto);
     }
 }

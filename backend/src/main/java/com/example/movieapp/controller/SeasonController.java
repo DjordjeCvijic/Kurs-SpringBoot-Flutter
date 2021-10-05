@@ -19,9 +19,14 @@ public class SeasonController {
         return seasonService.saveSeason(requestBody, requestBody.getContentId());
     }
 
-    @GetMapping()
+    @GetMapping("/getAll")
     public List<Season> getAll() {
         return seasonService.getAll();
+    }
+
+    @GetMapping()
+    public Season findById(@RequestParam("id") Integer id) throws NotFoundException {
+        return seasonService.getSeasonById(id);
     }
 
     @PutMapping("/update")
@@ -29,8 +34,8 @@ public class SeasonController {
         return seasonService.updateSeason(requestBody);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer item) throws NotFoundException {
-        seasonService.deleteSeasonById(item);
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Integer id) throws NotFoundException {
+        seasonService.deleteSeasonById(id);
     }
 }

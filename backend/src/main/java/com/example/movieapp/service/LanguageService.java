@@ -17,7 +17,6 @@ public class LanguageService {
     LanguageRepository languageRepository;
 
     public Language saveLanguage(@RequestBody Language requestBody) {
-        System.out.println(requestBody.getLanguageId());
         return languageRepository.save(requestBody);
     }
 

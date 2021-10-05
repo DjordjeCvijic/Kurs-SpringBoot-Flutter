@@ -20,7 +20,7 @@ public class ContentTypeController {
         return contentTypeService.saveContentType(requestBody);
     }
 
-    @GetMapping()
+    @GetMapping("/getAll")
     public List<ContentType> getAll() {
         return contentTypeService.getAll();
     }
@@ -31,8 +31,8 @@ public class ContentTypeController {
         return contentTypeService.updateContentType(requestBody);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Integer item) {
-        contentTypeService.deleteContentType(item);
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Integer id) {
+        contentTypeService.deleteContentType(id);
     }
 }

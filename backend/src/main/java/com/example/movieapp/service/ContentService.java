@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContentService {
@@ -41,34 +44,34 @@ public class ContentService {
 
 
     public Content saveContent(@RequestBody ContentDao contentDao) throws NotFoundException {
-        Content content=contentRepository.save(buildContentFromDto(contentDao));
-        contentDao.getGenreIds().forEach(genreId->{
-            ContentGenreKey key=new ContentGenreKey(genreId, contentDao.getContentId());
+        Content content = contentRepository.save(buildContentFromDto(contentDao));
+        contentDao.getGenreIds().forEach(genreId -> {
+            ContentGenreKey key = new ContentGenreKey(genreId, contentDao.getContentId());
             try {
-                Genre genre=genreService.getGenreById(genreId);
-                contentGenreService.saveContentGenre(new ContentGenre(key,content,genre));
+                Genre genre = genreService.getGenreById(genreId);
+                contentGenreService.saveContentGenre(new ContentGenre(key, content, genre));
             } catch (NotFoundException e) {
                 e.printStackTrace();
             }
         });
-        if(contentDao.getMovieSerieCastDtos()!=null){
+        if (contentDao.getMovieSerieCastDtos() != null) {
             //radi se o filmu i sada treba popuniti tabelu  Movie Cast
             contentDao.getMovieSerieCastDtos().forEach(movieCastDto -> {
-                MovieCastKey key=new MovieCastKey(content.getContentId(),movieCastDto.getMovieRoleId(),movieCastDto.getMoviePeopleId());
+                MovieCastKey key = new MovieCastKey(content.getContentId(), movieCastDto.getMovieRoleId(), movieCastDto.getMoviePeopleId());
                 try {
-                    MoviePeople moviePeople=moviePeopleService.getMoviePeopleById(movieCastDto.getMoviePeopleId());
-                    MovieRole movieRole=movieRoleService.getMovieRoleById(movieCastDto.getMovieRoleId());
-                    movieCastService.saveMovieCast(new MovieCast(key,content,movieRole,moviePeople));
+                    MoviePeople moviePeople = moviePeopleService.getMoviePeopleById(movieCastDto.getMoviePeopleId());
+                    MovieRole movieRole = movieRoleService.getMovieRoleById(movieCastDto.getMovieRoleId());
+                    movieCastService.saveMovieCast(new MovieCast(key, content, movieRole, moviePeople));
                 } catch (NotFoundException e) {
                     e.printStackTrace();
                 }
 
             });
         }
-        if(contentDao.getSeasonDtoList()!=null){
+        if (contentDao.getSeasonDtoList() != null) {
             contentDao.getSeasonDtoList().forEach(seasonDto -> {
                 try {
-                    seasonService.saveSeason(seasonDto,content.getContentId());
+                    seasonService.saveSeason(seasonDto, content.getContentId());
                 } catch (NotFoundException e) {
                     e.printStackTrace();
                 }
@@ -80,13 +83,12 @@ public class ContentService {
     }
 
 
-
     public List<Content> getAll() {
         return contentRepository.findAll();
     }
 
     public Content updateContent(ContentDao contentDaoToSave) throws NotFoundException {
-        Content content=getContentById(contentDaoToSave.getContentId());
+        Content content = getContentById(contentDaoToSave.getContentId());
         //brisanje zapisa iz vezne tabele
         contentGenreService.deleteContentGenreByContent(content);
         movieCastService.deleteMovieCastByContent(content);
@@ -95,17 +97,21 @@ public class ContentService {
     }
 
     public void deleteContent(Integer contentId) throws NotFoundException {
-        contentGenreService.deleteContentGenreByContent(getContentById(contentId));
-        movieCastService.deleteMovieCastByContent(getContentById(contentId));
-        seasonService.deleteSeasonByContent(getContentById(contentId));
-        reviewService.deleteReviewByContent(getContentById(contentId));
-        contentRepository.deleteById(contentId);
+        if (contentRepository.existsById(contentId)) {
+            contentGenreService.deleteContentGenreByContent(getContentById(contentId));
+            movieCastService.deleteMovieCastByContent(getContentById(contentId));
+            seasonService.deleteSeasonByContent(getContentById(contentId));
+            reviewService.deleteReviewByContent(getContentById(contentId));
+            contentRepository.deleteById(contentId);
+        } else throw new NotFoundException("Nije pronađena Content sa id-em:" + contentId);
+
+
     }
 
     private Content buildContentFromDto(ContentDao contentDao) throws NotFoundException {
 
-        Content content=new Content();
-        if(contentDao.getContentId()!=null)
+        Content content = new Content();
+        if (contentDao.getContentId() != null)
             content.setContentId(contentDao.getContentId());
         content.setTitle(contentDao.getTitle());
         content.setYear(contentDao.getYear());
@@ -123,7 +129,37 @@ public class ContentService {
     public Content getContentById(Integer id) throws NotFoundException {
         return contentRepository.findById(id).orElseThrow(() -> new NotFoundException("Nije pronađena Content sa id-em:" + id));
     }
-    public Content updateRating(Content content){
+
+    public Content updateRating(Content content) {
         return contentRepository.save(content);
+    }
+
+    public List<Content> getMovieContentByGenre(Integer genreId, Optional<Integer> numOfElement) throws NotFoundException {
+        List<ContentGenre> contentGenreList = contentGenreService.findByGenre(genreService.getGenreById(genreId));//filtrirano po zanru
+        List<Content> movieContent = new LinkedList<>() {
+        };
+        contentGenreList.forEach(contentGenre -> {
+            if (contentGenre.getContent().getContentType().getContentTypeId() == 1)//to znaci da je film
+                movieContent.add(contentGenre.getContent());
+        });
+        if (numOfElement.isPresent()) {
+            return movieContent.stream().limit(numOfElement.get()).collect(Collectors.toList());
+        }
+        return movieContent;
+
+    }
+
+    public List<Content> getSeriesContentByGenre(Integer genreId, Optional<Integer> numOfElement) throws NotFoundException {
+        List<ContentGenre> contentGenreList = contentGenreService.findByGenre(genreService.getGenreById(genreId));//filtrirano po zanru
+        List<Content> serieContent = new LinkedList<>() {
+        };
+        contentGenreList.forEach(contentGenre -> {
+            if (contentGenre.getContent().getContentType().getContentTypeId() == 2)//to znaci da je serija
+                serieContent.add(contentGenre.getContent());
+        });
+        if (numOfElement.isPresent()) {
+            return serieContent.stream().limit(numOfElement.get()).collect(Collectors.toList());
+        }
+        return serieContent;
     }
 }

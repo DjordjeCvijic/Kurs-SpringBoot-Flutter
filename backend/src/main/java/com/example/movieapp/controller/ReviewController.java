@@ -19,13 +19,13 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping
+    @GetMapping("/getAll")
     public List<Review> getAll() {
         return reviewService.getAll();
     }
 
-    @GetMapping("/{userId}/{contentId}")
-    public Review findById(@PathVariable Integer userId,@PathVariable Integer contentId) throws NotFoundException {
+    @GetMapping()
+    public Review findById(@RequestParam("userId") Integer userId,@RequestParam("contentId") Integer contentId) throws NotFoundException {
         return reviewService.getReviewById(userId,contentId);
     }
 
@@ -39,8 +39,8 @@ public class ReviewController {
         return reviewService.updateReview(requestBody);
     }
 
-    @DeleteMapping("/{userId}/{contentId}")
-    public void delete(@PathVariable Integer userId,@PathVariable Integer contentId) throws NotFoundException {
+    @DeleteMapping()
+    public void delete(@RequestParam("userId") Integer userId,@RequestParam("contentId") Integer contentId) throws NotFoundException {
         reviewService.deleteReviewById(userId,contentId);
     }
 }

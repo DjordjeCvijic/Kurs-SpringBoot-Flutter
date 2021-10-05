@@ -93,7 +93,6 @@ public class SeasonService {
 
     }
 
-
     public void deleteSeasonByContent(Content content) {
         List<Season>seasons=seasonRepository.findByContent(content);
         seasons.forEach(season -> {

@@ -48,6 +48,11 @@ public class TestController {
         return "Hello user!";
     }
 
+    @GetMapping("/user-id")
+    public String user(@RequestParam("id")Integer id) {
+        return "Hello user! sa id "  +id;
+    }
+
     @GetMapping("/")
     public String home() {
         return ("<h1>Welcome!</h1>");

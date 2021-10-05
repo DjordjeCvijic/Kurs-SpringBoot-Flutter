@@ -1,6 +1,7 @@
 package com.example.movieapp.controller;
 
 import com.example.movieapp.dto.EpisodeDto;
+import com.example.movieapp.model.Content;
 import com.example.movieapp.model.Episode;
 import com.example.movieapp.service.EpisodeService;
 
@@ -21,19 +22,23 @@ public class EpisodeController {
         return episodeService.saveEpisode(requestBody,requestBody.getSeasonId());
     }
 
-    @GetMapping()
+    @GetMapping("getAll")
     public List<Episode> getAll() {
         return episodeService.getAll();
     }
 
+    @GetMapping()
+    public Episode findById(@RequestParam("id") Integer id) throws NotFoundException {
+        return episodeService.getEpisodeById(id);
+    }
+
     @PutMapping("/update")
     public Episode update(@RequestBody EpisodeDto requestBody) throws NotFoundException {
-        System.out.println(requestBody.getEpisodeId());
         return episodeService.updateEpisode(requestBody);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Integer item) {
-        episodeService.deleteEpisode(item);
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Integer id) throws NotFoundException {
+        episodeService.deleteEpisode(id);
     }
 }

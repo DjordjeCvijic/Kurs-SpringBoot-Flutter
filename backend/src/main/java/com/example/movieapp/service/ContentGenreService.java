@@ -29,4 +29,8 @@ public class ContentGenreService {
     public void deleteContentGenreByContent(Content content) {
         contentGenreRepository.deleteByContent(content);
     }
+
+    public List<ContentGenre> findByGenre(Genre genre) {
+        return contentGenreRepository.findByGenre(genre);
+    }
 }

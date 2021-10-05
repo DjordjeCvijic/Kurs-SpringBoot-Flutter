@@ -19,54 +19,57 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
-	@Autowired
-	JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    JwtRequestFilter jwtRequestFilter;
 
-	String[] adminPermissionsList={"/movie-people/**","/content/**"};
-	String[] userPermissionsList={};
-	String[] userAndAminPermissionsList={"/content-comment/**","/review/**","/genre","user-person/update-info"};
-	String[] swaggerPermissionsList={"/swagger-ui/*", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**"};
-	String[] permissionsForAllList={"/auth/**"};
+    String[] adminPermissionsList = {"/movie-people/**", "/content/**"};
+//    String[] userPermissionsList = {"/content","/content/movie-by-genre"};
+    String[] userPermissionsList = {"/test/user","/test/user-id","/content/movie-by-genre"};
+    String[] userAndAminPermissionsList = {"/content-comment/**", "/review/**", "/genre/getAll",
+            "/user-person/update-info"};
+    String[] swaggerPermissionsList = {"/swagger-ui/*", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**"};
+    String[] permissionsForAllList = {"/auth/**"};
 
-	// authentication
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
-	}
+    // authentication
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
+    }
 
-	// authorization
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
+    // authorization
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
 
-		http
-				.csrf().disable()
-				.authorizeRequests()
-				.antMatchers(permissionsForAllList).permitAll()
-				//.antMatchers("/swagger-resources/**").permitAll()
-				.antMatchers(swaggerPermissionsList).permitAll()
-				.antMatchers(adminPermissionsList).hasRole("ADMIN")
-				.antMatchers(userPermissionsList).hasRole("USER")
-				.antMatchers(userAndAminPermissionsList).hasAnyRole("USER","ADMIN")
-				.anyRequest().authenticated()
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http
-				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(permissionsForAllList).permitAll()
+                //.antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers(swaggerPermissionsList).permitAll()
+                .antMatchers(adminPermissionsList).hasRole("ADMIN")
+                .antMatchers(userPermissionsList).hasAnyRole("USER")
+                .antMatchers(userAndAminPermissionsList).hasAnyRole("USER", "ADMIN")
+                .anyRequest().authenticated()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-		// @formatter:on
-	}
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+        // @formatter:on
+    }
 
-	@Bean
-	public PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder(11);
-	}
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder(11);
+    }
 
 }

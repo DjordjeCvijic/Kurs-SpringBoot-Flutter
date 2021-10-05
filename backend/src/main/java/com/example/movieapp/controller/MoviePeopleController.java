@@ -20,25 +20,24 @@ public class MoviePeopleController {
         return moviePeopleService.saveMoviePeople(requestBody);
     }
 
-    @GetMapping()
+    @GetMapping("getAll")
     public List<MoviePeople> getAll() {
         return moviePeopleService.getAll();
     }
 
-    @GetMapping(value = "/{id}")
-    public MoviePeople findById(@PathVariable Integer id) throws NotFoundException {
+    @GetMapping()
+    public MoviePeople findById(@RequestParam("id") Integer id) throws NotFoundException {
         return moviePeopleService.getMoviePeopleById(id);
     }
 
     @PutMapping("/update")
-    public MoviePeople update(@RequestBody MoviePeople requestBody) {
-        System.out.println(requestBody.getMoviePeopleId());
+    public MoviePeople update(@RequestBody MoviePeople requestBody) throws NotFoundException {
         return moviePeopleService.updateMoviePeople(requestBody);
     }
 
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Integer item) {
-        moviePeopleService.deleteMoviePeople(item);
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Integer id) throws NotFoundException {
+        moviePeopleService.deleteMoviePeople(id);
     }
 }

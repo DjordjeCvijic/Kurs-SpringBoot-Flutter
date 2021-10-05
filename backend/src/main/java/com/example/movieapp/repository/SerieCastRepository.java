@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SerieCastRepository extends JpaRepository<SerieCast, SerieCastKey> {
     void deleteBySeason(Season season);
+
+    boolean existsBySeason(Season season);
 }

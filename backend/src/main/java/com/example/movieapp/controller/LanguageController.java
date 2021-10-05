@@ -26,12 +26,11 @@ public class LanguageController {
 
     @PutMapping("/update")
     public Language update(@RequestBody Language requestBody) throws NotFoundException {
-        System.out.println(requestBody.getLanguageId());
         return languageService.updateLanguage(requestBody);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Integer item) {
-        languageService.deleteLanguage(item);
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Integer id) {
+        languageService.deleteLanguage(id);
     }
 }

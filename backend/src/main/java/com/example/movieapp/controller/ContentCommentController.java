@@ -19,18 +19,18 @@ public class ContentCommentController {
     @Autowired
     ContentCommentService contentCommentService;
 
-    @GetMapping
+    @GetMapping("getAll")
     public List<ContentComment> getAll() {
         return contentCommentService.getAllContentComment();
     }
 
-    @GetMapping("/{id}")
-    public ContentComment findById(@PathVariable Integer id) throws NotFoundException {
+    @GetMapping()
+    public ContentComment findById(@RequestParam("id") Integer id) throws NotFoundException {
         return contentCommentService.getContentCommentById(id);
     }
 
     @PostMapping("/save")
-    public ContentComment saveContent(@RequestBody ContentCommentDto requestBody) throws NotFoundException {
+    public ContentComment saveContentComment(@RequestBody ContentCommentDto requestBody) throws NotFoundException {
         return contentCommentService.saveContentComment(requestBody);
     }
 
@@ -39,8 +39,8 @@ public class ContentCommentController {
         return contentCommentService.updateContentComment(requestBody);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) throws NotFoundException {
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Integer id) throws NotFoundException {
         contentCommentService.deleteContentCommentById(id);
     }
 
