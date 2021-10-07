@@ -16,7 +16,25 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
             primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: Colors.grey[850]),
+            scaffoldBackgroundColor: Colors.grey[850],
+            elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.grey[850]),
+                    minimumSize: MaterialStateProperty.all(const Size(10, 60)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28.0),
+                            side: const BorderSide(
+                              width: 0.5,
+                              style: BorderStyle.solid,
+                              color: Colors.white,
+                            ))))),
+            textTheme: const TextTheme(
+                button: TextStyle(
+              fontSize: 25,
+              color: Colors.white,
+            ))),
         home: const LoginScreen(),
         routes: {
           //globals.test_route: (ctx) => Test()
