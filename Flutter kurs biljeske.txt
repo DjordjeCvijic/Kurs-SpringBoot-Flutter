@@ -2,3 +2,23 @@ Flutter Kurs:
 
 
 flutter ectenzija u VS
+
+komanda flutter clean ponekad kao rebuild
+
+column  main axes , cross aces
+scaffild
+row
+container
+
+
+Padding prvi u body za bolje pozicioniranje
+flexible kao wrap contetn
+a exendble kao match parent
+
+
+Stilovi:
+
+
+precica st kad hocu kreirati widget u novom fajlu
+
+za back samo skinemo sa stega
