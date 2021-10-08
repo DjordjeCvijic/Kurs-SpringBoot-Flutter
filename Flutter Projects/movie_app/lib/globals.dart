@@ -1,2 +1,2 @@
 String login_route = "login_screen";
-String second_screen_route = "second_screen";
+String main_screen_route = "main_screen";

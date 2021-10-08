@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
+import "../globals.dart" as globals;
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    void clickOnLoginBtn() {
+      Navigator.of(context).pushNamed(
+        globals.main_screen_route,
+      );
+    }
+
     return Scaffold(
       body: Padding(
         child: Column(
@@ -26,7 +34,7 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 100),
             ElevatedButton(
-              onPressed: null,
+              onPressed: clickOnLoginBtn,
               child: Text("Sing in with Email",
                   style: Theme.of(context).textTheme.button),
               style: ButtonStyle(

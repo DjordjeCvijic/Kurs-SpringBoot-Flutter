@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/screens/login_screen.dart';
+import 'package:movie_app/screens/main_screen.dart';
 import "globals.dart" as globals;
 
 void main() {
@@ -36,8 +37,6 @@ class MyApp extends StatelessWidget {
               color: Colors.white,
             ))),
         home: const LoginScreen(),
-        routes: {
-          //globals.test_route: (ctx) => Test()
-        });
+        routes: {globals.main_screen_route: (ctx) => const MainScreen()});
   }
 }
