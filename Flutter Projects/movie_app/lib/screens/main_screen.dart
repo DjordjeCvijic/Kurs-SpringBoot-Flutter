@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/pages/favorite_page.dart';
-import 'package:movie_app/pages/home_page.dart';
-import 'package:movie_app/pages/search_page.dart';
-import 'package:movie_app/pages/settings_page.dart';
+import 'package:movie_app/screens/favorite_screen.dart';
+import 'package:movie_app/screens/home_screen.dart';
+import 'package:movie_app/screens/search_screen.dart';
+import 'package:movie_app/screens/settings_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -14,10 +14,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   final List<Widget> _children = const [
-    HomePage(),
-    SearchPage(),
-    FavoritePage(),
-    SettingsPage()
+    HomeScreen(),
+    SearchScreen(),
+    FavoriteScreen(),
+    SettingsScreen()
   ];
 
   @override
@@ -34,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
           currentIndex: _currentIndex, //koji ce biti dole selektovan
           items: const [
             BottomNavigationBarItem(
+              //activeIcon: CircleAvatar(child: Icon(Icons.home)),
               icon: Icon(Icons.home),
               label: "Home",
             ),
