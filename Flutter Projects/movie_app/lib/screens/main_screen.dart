@@ -27,29 +27,52 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           type: BottomNavigationBarType.fixed,
-          iconSize: 35,
-          selectedFontSize: 22,
-          unselectedFontSize: 17,
+          iconSize: 25,
+          selectedFontSize: 10,
+          unselectedFontSize: 8,
           unselectedItemColor: Colors.white,
           currentIndex: _currentIndex, //koji ce biti dole selektovan
           items: const [
             BottomNavigationBarItem(
-              //activeIcon: CircleAvatar(child: Icon(Icons.home)),
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
+                activeIcon: CircleAvatar(
+                  child: Icon(
+                    Icons.home,
+                    size: 25,
+                  ),
+                  radius: 23,
+                ),
+                icon: Icon(Icons.home),
+                label: ""),
             BottomNavigationBarItem(
+                activeIcon: CircleAvatar(
+                  child: Icon(
+                    Icons.search,
+                    size: 25,
+                  ),
+                  radius: 23,
+                ),
                 icon: Icon(Icons.search),
-                label: "Search",
-                backgroundColor: Colors.blue),
+                label: ""),
             BottomNavigationBarItem(
+                activeIcon: CircleAvatar(
+                  child: Icon(
+                    Icons.favorite,
+                    size: 25,
+                  ),
+                  radius: 23,
+                ),
                 icon: Icon(Icons.favorite),
-                label: "Favorite",
-                backgroundColor: Colors.blue),
+                label: ""),
             BottomNavigationBarItem(
+                activeIcon: CircleAvatar(
+                  child: Icon(
+                    Icons.settings,
+                    size: 25,
+                  ),
+                  radius: 23,
+                ),
                 icon: Icon(Icons.settings),
-                label: "Settings",
-                backgroundColor: Colors.blue),
+                label: ""),
           ],
           onTap: (index) {
             setState(() {

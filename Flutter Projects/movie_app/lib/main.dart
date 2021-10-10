@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/screens/content_description_screen.dart';
 import 'package:movie_app/screens/login_screen.dart';
 import 'package:movie_app/screens/main_screen.dart';
 import "globals.dart" as globals;
@@ -17,11 +18,11 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
             primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: Colors.grey[850],
+            scaffoldBackgroundColor: Colors.grey[900],
             elevatedButtonTheme: ElevatedButtonThemeData(
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(Colors.grey[850]),
+                        MaterialStateProperty.all(Colors.grey[900]),
                     minimumSize: MaterialStateProperty.all(const Size(10, 60)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -37,6 +38,10 @@ class MyApp extends StatelessWidget {
               color: Colors.white,
             ))),
         home: const LoginScreen(),
-        routes: {globals.main_screen_route: (ctx) => const MainScreen()});
+        routes: {
+          globals.main_screen_route: (ctx) => const MainScreen(),
+          globals.content_description_screen_route: (ctx) =>
+              ContentDescriptionScreen()
+        });
   }
 }

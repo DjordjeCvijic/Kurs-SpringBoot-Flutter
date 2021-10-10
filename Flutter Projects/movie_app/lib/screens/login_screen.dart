@@ -15,6 +15,7 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
+        padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -70,7 +71,6 @@ class LoginScreen extends StatelessWidget {
             )
           ],
         ),
-        padding: const EdgeInsets.fromLTRB(60, 20, 60, 0),
       ),
     );
   }
