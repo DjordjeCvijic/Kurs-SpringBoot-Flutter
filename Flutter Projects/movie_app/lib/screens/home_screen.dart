@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
               iconSize: 70,
               //icon: const Icon(Icons.add_alert),
               icon: const CircleAvatar(
-                  backgroundImage: AssetImage("lib/assets/image1.jpg")),
+                  backgroundImage: AssetImage("lib/assets/userImage.jpg")),
               tooltip: 'Show Snackbar',
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
