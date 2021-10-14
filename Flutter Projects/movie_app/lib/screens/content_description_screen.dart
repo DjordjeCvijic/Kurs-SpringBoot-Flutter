@@ -1,17 +1,34 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:movie_app/helpers/token.dart';
+import 'package:movie_app/providers/content_provider.dart';
 import 'package:movie_app/widgets/comment.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class ContentDescriptionScreen extends StatelessWidget {
+class ContentDescriptionScreen extends StatefulWidget {
   const ContentDescriptionScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ContentDescriptionScreen> createState() =>
+      _ContentDescriptionScreenState();
+}
+
+class _ContentDescriptionScreenState extends State<ContentDescriptionScreen> {
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final contentDetails = args["data"] as Map<String, dynamic>;
+    final contentId = args["contentId"] as int;
+
+    List<dynamic> comments = contentDetails["contentComments"] as List<dynamic>;
+    var textEditingController = TextEditingController();
 
     final YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(args["trailer"]),
+      initialVideoId: contentDetails["trailerLink"],
+      //initialVideoId: 'iLnmTe5Q2Qw',
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: true,
@@ -62,7 +79,7 @@ class ContentDescriptionScreen extends StatelessWidget {
           child: ListView(
             children: [
               Text(
-                args["name"],
+                contentDetails["title"],
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 65,
@@ -80,10 +97,33 @@ class ContentDescriptionScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                args["description"],
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
+                "Trajanje: ${contentDetails['duration']} minuta",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Godina izdavanja: ${contentDetails['year']}",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Žanrovi:",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 10),
+                height: 50,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: contentDetails['genres'].length,
+                  itemBuilder: (context, index) => Text(
+                    '- ${contentDetails['genres'][index]['name']}',
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
                 ),
               ),
               const SizedBox(
@@ -100,10 +140,13 @@ class ContentDescriptionScreen extends StatelessWidget {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: _uloge.length,
+                itemCount:
+                    (contentDetails["movieCastList"] as List<dynamic>).length,
                 itemBuilder: (context, index) {
-                  final _ime = _uloge[index]['ime'];
-                  final _uloga = _uloge[index]['uloga'];
+                  final _ime = (contentDetails["movieCastList"][index]
+                      ["moviePeople"]["firstName"]);
+                  final _uloga = (contentDetails["movieCastList"][index]
+                      ["movieRole"]["name"]);
                   return Text(
                     _ime.toString() + " - " + _uloga.toString(),
                     style: const TextStyle(
@@ -140,19 +183,77 @@ class ContentDescriptionScreen extends StatelessWidget {
                       )),
                 ),
               ]),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _uloge.length,
-                itemBuilder: (context, index) {
-                  String _ime = _komentari[index]['ime'].toString();
-                  int _zvjezdice = _komentari[index]['zvjezdice'];
-                  String _komentar = _komentari[index]['komentar'].toString();
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Comment(_ime, _zvjezdice, _komentar),
-                  );
-                },
+              ChangeNotifierProvider.value(
+                value: ContentProvider(),
+                builder: (context, child) => Column(
+                  children: [
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: contentDetails["contentComments"].length,
+                      itemBuilder: (context, index) {
+                        String _ime = contentDetails["contentComments"][index]
+                            ["user"]["firstName"];
+                        // int _zvjezdice = _komentari[index]['zvjezdice'];
+                        int _zvjezdice = 3;
+                        String _komentar =
+                            contentDetails["contentComments"][index]["comment"];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Comment(_ime, _zvjezdice, _komentar),
+                        );
+                      },
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          style: TextStyle(color: Colors.black),
+                          cursorColor: Colors.black,
+                          controller: textEditingController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey.shade300,
+                            focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(11.0))),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(11.0))),
+                            hintText: 'Komment',
+                            hintStyle: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              final contentProvider =
+                                  Provider.of<ContentProvider>(context,
+                                      listen: false);
+
+                              contentProvider.addComment(
+                                  8, contentId, textEditingController.text);
+                            },
+                            child: Text("Dodaj komentar"),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.blue),
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(double.infinity, 60)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(28.0),
+                                )))),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),

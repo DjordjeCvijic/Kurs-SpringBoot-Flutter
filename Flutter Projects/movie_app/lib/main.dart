@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/providers/login_provider.dart';
 import 'package:movie_app/screens/content_description_screen.dart';
 import 'package:movie_app/screens/login_screen.dart';
+import 'package:movie_app/screens/welcome_screen.dart';
 import 'package:movie_app/screens/main_screen.dart';
+import 'package:provider/provider.dart';
 import "globals.dart" as globals;
 
 void main() {
@@ -33,13 +36,68 @@ class MyApp extends StatelessWidget {
                               color: Colors.white,
                             ))))),
             textTheme: const TextTheme(
+                headline1: TextStyle(
+                  color: Colors.white,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
+                headline2: TextStyle(
+                  color: Colors.white,
+                  fontSize: 35,
+                  fontWeight: FontWeight.w300,
+                ),
+                subtitle2: TextStyle(
+                  color: Color.fromRGBO(
+                    193,
+                    193,
+                    193,
+                    1,
+                  ),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
+                subtitle1: TextStyle(
+                  color: Color.fromRGBO(
+                    193,
+                    193,
+                    193,
+                    1,
+                  ),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+                caption: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+                bodyText1: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+                bodyText2: TextStyle(
+                  color: Color.fromRGBO(
+                    193,
+                    193,
+                    193,
+                    1,
+                  ),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300,
+                ),
                 button: TextStyle(
-              fontSize: 25,
-              color: Colors.white,
-            ))),
-        home: const LoginScreen(),
+                  fontSize: 25,
+                  color: Colors.white,
+                ))),
+        home: ChangeNotifierProvider(
+          create: (context) => LoginPovider(),
+          child: const WelcomeScreen(),
+        ),
+        //home: const WelcomeScreen(),
         routes: {
           globals.main_screen_route: (ctx) => const MainScreen(),
+          globals.login_route: (ctx) => const LoginScreen(),
           globals.content_description_screen_route: (ctx) =>
               ContentDescriptionScreen()
         });
