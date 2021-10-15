@@ -190,14 +190,12 @@ class _ContentDescriptionScreenState extends State<ContentDescriptionScreen> {
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: contentDetails["contentComments"].length,
+                      itemCount: comments.length,
                       itemBuilder: (context, index) {
-                        String _ime = contentDetails["contentComments"][index]
-                            ["user"]["firstName"];
+                        String _ime = comments[index]["user"]["firstName"];
                         // int _zvjezdice = _komentari[index]['zvjezdice'];
                         int _zvjezdice = 3;
-                        String _komentar =
-                            contentDetails["contentComments"][index]["comment"];
+                        String _komentar = comments[index]["comment"];
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Comment(_ime, _zvjezdice, _komentar),
@@ -231,13 +229,23 @@ class _ContentDescriptionScreenState extends State<ContentDescriptionScreen> {
                           height: 20,
                         ),
                         ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               final contentProvider =
                                   Provider.of<ContentProvider>(context,
                                       listen: false);
 
                               contentProvider.addComment(
-                                  8, contentId, textEditingController.text);
+                                  contentId, textEditingController.text);
+                              var parsedToken = await Token.decodeJWT();
+                              var newComment = {
+                                "comment": textEditingController.text,
+                                "user": {"firstName": parsedToken!["firstName"]}
+                              };
+
+                              comments.add(newComment);
+                              setState(() {
+                                comments = comments;
+                              });
                             },
                             child: Text("Dodaj komentar"),
                             style: ButtonStyle(

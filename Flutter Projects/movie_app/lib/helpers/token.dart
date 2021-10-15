@@ -20,6 +20,7 @@ class Token {
     if (token == null) return null;
 
     Map<String, dynamic> payload = Jwt.parseJwt(token);
+    log(payload.toString());
     return (payload);
   }
 }

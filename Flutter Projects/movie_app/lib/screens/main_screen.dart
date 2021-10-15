@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/providers/content_provider.dart';
 import 'package:movie_app/providers/home_provider.dart';
 import 'package:movie_app/providers/login_provider.dart';
 import 'package:movie_app/screens/favorite_screen.dart';
@@ -27,7 +28,10 @@ class _MainScreenState extends State<MainScreen> {
       create: (context) => HomeProvider(),
       child: const HomeScreen(),
     ),
-    1: const SearchScreen(),
+    1: ChangeNotifierProvider(
+      create: (context) => ContentProvider(),
+      child: const SearchScreen(),
+    ),
     2: const FavoriteScreen(),
     3: const SettingsScreen()
   };

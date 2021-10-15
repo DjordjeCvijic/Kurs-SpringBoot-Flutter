@@ -58,7 +58,6 @@ class ContentProvider with ChangeNotifier {
   }
 
   Future<void> addComment(
-    int userId,
     int contentId,
     String comment,
   ) async {
